@@ -1,0 +1,41 @@
+import axios from 'axios';
+import { 
+    type Pokemon,
+    type PokemonCardData, 
+    type PokemonListResponse, 
+} from '../types/pokemon';
+
+const API_BASE_URL = 'https://pokeapi.co/api/v2';
+
+const extractIdFromUrl = (url: string): number => {
+    const parts = url.split('/').filter(Boolean);
+    return parseInt(parts[parts.length - 1], 10);
+};
+
+const getOfficialArtworkUrl = (id: number): string => {
+    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+};
+
+export async function getPokemonList(limit: number = 20): Promise<PokemonCardData[]> {
+    const { data } = await axios.get<PokemonListResponse>(`${API_BASE_URL}/pokemon?limit=${limit}`);
+
+    const cards: PokemonCardData[] = await Promise.all(
+        data.results.map(async (item) => {
+            const id = extractIdFromUrl(item.url);
+            const details = await getPokemonById(id);
+            return {        
+                id: details.id,
+                name: details.name,
+                imageUrl: getOfficialArtworkUrl(details.id),
+                types: details.types.map((t) => t.type.name)
+            };
+        })
+    );
+
+    return cards;
+};
+
+export async function getPokemonById(id: number): Promise<Pokemon> {
+    const { data } = await axios.get(`${API_BASE_URL}/pokemon/${id}`);
+    return data;
+}
