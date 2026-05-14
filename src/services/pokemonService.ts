@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { 
-    type Pokemon,
-    type PokemonCardData, 
-    type PokemonListResponse, 
-} from '../types/pokemon';
+import { type Pokemon } from '../types/pokemon.interface';
+import { type PokemonCardData, type PokemonListResponse } from '../types/pokemonList.interface';
 
 const API_BASE_URL = 'https://pokeapi.co/api/v2';
 

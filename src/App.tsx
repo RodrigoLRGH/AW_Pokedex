@@ -1,9 +1,9 @@
-import PokemonCatalog  from "./pages/PokemonCatalog";
+import AppRouter from "./app/routes/AppRouter";
 
 function App() {
     return (
         <>
-            <PokemonCatalog />
+            <AppRouter />
         </>
     )
 }
