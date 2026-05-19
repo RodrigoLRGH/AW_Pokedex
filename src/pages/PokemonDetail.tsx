@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { usePokemon } from '../hooks/usePokemon';
+import { usePokemonDetail } from '../hooks/usePokemon';
 import { Button } from '@/components/ui/button';
-import { getTypeColor } from '../utils/pokemonUtils';
 import PokemonHeader from '@/components/PokemonHeader';
 import PokemonStats from '@/components/PokemonStats';
 import PokemonAbilities from '@/components/PokemonAbilities';
@@ -15,7 +14,7 @@ import PokemonSpritesHistory from '@/components/PokemonSpritesHistory';
 function PokemonDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { pokemon, loading, error } = usePokemon(Number(id));
+    const { pokemon, loading, error } = usePokemonDetail(Number(id));
 
     if (loading)
         return <p className='text-center py-12 text-muted-foreground'>Loading...</p>;
@@ -25,13 +24,11 @@ function PokemonDetail() {
     if (!pokemon)
         return <p className='text-center py-12 text-destructive'>Pokemon no encontrado</p>;
 
-    const typeColor = getTypeColor(pokemon.types[0].type.name);
-
     return (
         <>
             <div className="min-h-screen bg-muted/40">
                 <nav className="bg-background shadow px-8 py-4 flex justify-between items-center">
-                    <Button variant="ghost" onClick={() => navigate('/catalog')}>
+                    <Button variant="outline" onClick={() => navigate('/catalog')}>
                         Volver al catálogo
                     </Button>
                 </nav>
